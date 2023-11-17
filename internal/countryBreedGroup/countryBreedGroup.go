@@ -3,7 +3,6 @@ package countryBreedGroup
 import (
 	"Stas-sH/clietntForCts/pkg/cat"
 	"sort"
-	"sync"
 )
 
 func CountryBreedGroup(cats []cat.Cat) map[string][]string {
@@ -20,6 +19,7 @@ func CountryBreedGroup(cats []cat.Cat) map[string][]string {
 	return sortByBreedsLen(group)
 }
 
+/*
 func sortByBreedsLen(group map[string][]string) map[string][]string {
 	wg := &sync.WaitGroup{}
 	var mu sync.Mutex
@@ -34,6 +34,15 @@ func sortByBreedsLen(group map[string][]string) map[string][]string {
 		}(key, breeds)
 	}
 	wg.Wait()
+	return group
+}
+*/
+
+func sortByBreedsLen(group map[string][]string) map[string][]string {
+	for key, breeds := range group {
+		breeds = sortBreeds(breeds)
+		group[key] = breeds
+	}
 	return group
 }
 
