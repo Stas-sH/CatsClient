@@ -23,14 +23,15 @@ func CountryBreedGroup(cats []cat.Cat) map[string][]string {
 func sortByBreedsLen(group map[string][]string) map[string][]string {
 	wg := &sync.WaitGroup{}
 	var mu sync.Mutex
-	for _, breeds := range group {
+	for key, breeds := range group {
 		wg.Add(1)
-		go func(breeds []string) {
+		func(key string, breeds []string) {
 			defer wg.Done()
 			mu.Lock()
 			breeds = sortBreeds(breeds)
+			group[key] = breeds
 			mu.Unlock()
-		}(breeds)
+		}(key, breeds)
 	}
 	wg.Wait()
 	return group
